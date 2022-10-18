@@ -117,10 +117,17 @@ public class GarageQuestionDivider : MonoBehaviour
     public void FillAndRandomize()
     {
         // Fill Questions and answers
-        for(int i = 0; i < GetJson._ReceivedData.data.room.questions.Count; i++ )
+        int questionCount = GetJson._ReceivedData.data.room.questions.Count;
+        for (int i = 0; i < questionCount; i++ )
         {
             Questions.Add(GetJson._ReceivedData.data.room.questions[i].question);
-            Answers.Add(new Answer($"{GetJson._ReceivedData.data.room.questions[i].answers[0].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[1].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[2].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[3].answer}"));
+
+            int answerCount = GetJson._ReceivedData.data.room.questions[i].answers.Count;
+            for ( int ia = 0; ia < answerCount; ia++)
+            {
+                Answers.Add(new Answer(GetJson._ReceivedData.data.room.questions[i].answers[ia].answer));
+            }
+            // Answers.Add(new Answer($"{GetJson._ReceivedData.data.room.questions[i].answers[0].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[1].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[2].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[3].answer}"));
         }
 
         // Randomize
@@ -162,6 +169,7 @@ public class GarageQuestionDivider : MonoBehaviour
             PopUpBox.SetActive(true);
             PopUpText.text = Questions.ElementAt(val);
             //Debug.Log(Questions.ElementAt(val));
+            Debug.Log(Questions);
 
             AnswerTexts[0].text = "A";
             AnswerTexts[1].text = "B";
@@ -265,7 +273,7 @@ public class GarageQuestionDivider : MonoBehaviour
                 if (AnswersToFind.Count == 0)
                 {
                     // CLear all fields and end.
-                    PopUpText.text = $"You've escaped your garage! \n Wrong answers: {TimesAnsweredWrong}";
+                    PopUpText.text = $"You've escaped! \n Wrong answers: {TimesAnsweredWrong}";
                     AnswerTexts[0].text = "";
                     AnswerTexts[1].text = "";
                     AnswerTexts[2].text = "";
