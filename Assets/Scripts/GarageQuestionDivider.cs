@@ -17,34 +17,35 @@ public class GarageQuestionDivider : MonoBehaviour
         // The answer string contains 4 different answers divided by a ","
         public Answer(string ans)
         {
+            // dit werkt
             string[] words = ans.Split(',');
 
             // Randomize the different answers
             correctIndex = OrderRandomizer(words);
         }
-        private int OrderRandomizer(string[] array)
+        private int OrderRandomizer(string[] words)
         {
-            string correctAnswer = array[0];
+            string correctAnswer = words[0];
             int newIndex = 0;
             // Randomize array.
-            for (int t = 0; t < array.Length; t++)
+            for (int t = 0; t < words.Length; t++)
             {
-                string temp = array[t];
-                int r = Random.Range(t, array.Length);
-                array[t] = array[r];
-                array[r] = temp;
+                string temp = words[t];
+                int r = Random.Range(t, words.Length);
+                words[t] = words[r];
+                words[r] = temp;
             }
 
-            for (int i = 0; i < array.Length; i++)
+            for (int i = 0; i < words.Length; i++)
             {
-                if (array[i] == correctAnswer)
+                if (words[i] == correctAnswer)
                 {
                     newIndex = i;
                 }
             }
 
             // Save the randomized array.
-            answer = array;
+            answer = words;
             return newIndex;
         }
     }
@@ -77,7 +78,7 @@ public class GarageQuestionDivider : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(RoomCode.RoomId);
+        Debug.Log("starting room: " + RoomCode.RoomId);
         PhotonNetwork.AutomaticallySyncScene = true;
     }
 
@@ -113,11 +114,12 @@ public class GarageQuestionDivider : MonoBehaviour
         }
     }
 
-    // Method to add Questions and Answers for events
+    // Method to add Questions and Answers for events - WERKT
     public void FillAndRandomize()
     {
         // Fill Questions and answers
         int questionCount = GetJson._ReceivedData.data.room.questions.Count;
+        // Debug.Log("questionCount: "+questionCount);
         for (int i = 0; i < questionCount; i++ )
         {
             Questions.Add(GetJson._ReceivedData.data.room.questions[i].question);
@@ -130,7 +132,7 @@ public class GarageQuestionDivider : MonoBehaviour
             // Answers.Add(new Answer($"{GetJson._ReceivedData.data.room.questions[i].answers[0].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[1].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[2].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[3].answer}"));
         }
 
-        // Randomize
+        // Randomize - WERKT
         //Randomize list
         for (int i = 0; i < Questions.Count; i++)
         {
@@ -146,19 +148,20 @@ public class GarageQuestionDivider : MonoBehaviour
             Answers[randomIndex] = tempA;
         }
 
-        // Copy All answers to the to be found list;
+        // Copy All answers to the to be found list; - WERKT
         foreach (Answer a in Answers)
         {
             AnswersToFind.Add(a);
         }
     }
 
-    // Pop up with the question.
+    // Pop up with the question. - dit gebeurt als je op de deurklink klikt
     public void PopUpQuestions(int val)
     {
         if (!AlreadyPopped)
         {
             QuestionPopped = true;
+            QuestionPoppedClass.Question_Popped = true;
             if (!FoundQuestions.Contains(Questions.ElementAt(val)))
             {
                 FoundQuestions.Add(Questions[val]);
@@ -168,15 +171,18 @@ public class GarageQuestionDivider : MonoBehaviour
 
             PopUpBox.SetActive(true);
             PopUpText.text = Questions.ElementAt(val);
-            //Debug.Log(Questions.ElementAt(val));
-            Debug.Log(Questions);
 
+            Debug.Log("this question: (next log)");
+            Debug.Log(Questions[val]);
             AnswerTexts[0].text = "A";
             AnswerTexts[1].text = "B";
             AnswerTexts[2].text = "C";
             AnswerTexts[3].text = "D";
 
             PopUpAnimation.SetTrigger("Pop");
+
+            Debug.Log("popped Quesiton: " + Questions.ElementAt(val));
+            // Debug.Log("Questions: "+ Questions);
         }
 
         // There is a pop up open.
@@ -208,6 +214,10 @@ public class GarageQuestionDivider : MonoBehaviour
 
             for (int i = 0; i < AnswerTexts.Length; i++)
             {
+                // ERROR / dit gaat fout
+                Debug.Log("i: "+i);
+                Debug.Log("Answertexts: "+AnswerTexts[i]);
+                Debug.Log("Answertexts answer: " + AnswerTexts[i].text);
                 AnswerTexts[i].text = Answers.ElementAt(val).answer[i];
             }
             PopUpText.text = "";
@@ -227,6 +237,7 @@ public class GarageQuestionDivider : MonoBehaviour
     public void QuestionClosed()
     {
         QuestionPopped = false;
+        QuestionPoppedClass.Question_Popped = false;
         AlreadyPopped = false;
         FullQuestionPopped = false;
     }

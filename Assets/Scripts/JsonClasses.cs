@@ -71,3 +71,8 @@ public static class InvalidAttempts
 {
     public static int Invalid_Attempts = 0;
 }
+
+public static class QuestionPoppedClass
+{
+    public static bool Question_Popped;
+}

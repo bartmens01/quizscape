@@ -63,12 +63,12 @@ public class JsonController : MonoBehaviour
             ProcessJsonData(_www.downloadHandler.text);
             // Call the event
             DoneProcessingJson.Invoke();
-            Debug.Log("Processed");
-            Debug.Log(_www);
+            Debug.Log("Data from CMS Processed");
+            // Debug.Log(_www.downloadHandler.text);
         }
         else
         {
-            Debug.Log("Error");
+            Debug.Log("Error while getting room data from CMS");
         }
     }
 

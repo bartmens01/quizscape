@@ -310,10 +310,13 @@ public class Outline : MonoBehaviour {
     void OnMouseOver()
     {
         //If your mouse hovers over the GameObject with the script attached, output this message
-        outlineMode = Mode.OutlineVisible;
-        outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-        outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
-        outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
+        if (!QuestionPoppedClass.Question_Popped)
+        {
+            outlineMode = Mode.OutlineVisible;
+            outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
+            outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
+            outlineFillMaterial.SetFloat("_OutlineWidth", outlineWidth);
+        }
     }
 
     void OnMouseExit()
