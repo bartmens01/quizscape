@@ -64,6 +64,7 @@ public class JsonController : MonoBehaviour
             // Call the event
             DoneProcessingJson.Invoke();
             Debug.Log("Processed");
+            Debug.Log(_www);
         }
         else
         {
