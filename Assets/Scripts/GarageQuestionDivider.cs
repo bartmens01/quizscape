@@ -63,6 +63,7 @@ public class GarageQuestionDivider : MonoBehaviour
 
     // Variables for the questions and answers.
     private List<string> Questions = new List<string>();
+    private List<Question> QuestionList = new List<Question>();
     private List<Answer> Answers = new List<Answer>();
     //private List<string> CorrectAnswers = new List<string>();
 
@@ -123,6 +124,9 @@ public class GarageQuestionDivider : MonoBehaviour
         for (int i = 0; i < questionCount; i++ )
         {
             Questions.Add(GetJson._ReceivedData.data.room.questions[i].question);
+            //Debug.Log("the question json or string?: ");
+            //Debug.Log(GetJson._ReceivedData.data.room.questions[i].answers[0].answer + GetJson._ReceivedData.data.room.questions[i].answers[0].is_correct);
+            QuestionList.Add(GetJson._ReceivedData.data.room.questions[i]);
 
             int answerCount = GetJson._ReceivedData.data.room.questions[i].answers.Count;
             for ( int ia = 0; ia < answerCount; ia++)
@@ -134,16 +138,21 @@ public class GarageQuestionDivider : MonoBehaviour
 
         // Randomize - WERKT
         //Randomize list
-        for (int i = 0; i < Questions.Count; i++)
+        int questionAmount = Questions.Count;
+        for (int i = 0; i < questionAmount; i++)
         {
             string tempQ = Questions[i];
+            Question tempQuestion = QuestionList[i];
             Answer tempA = Answers[i];
-            int randomIndex = Random.Range(i, Questions.Count);
+            int randomIndex = Random.Range(i, questionAmount);
 
             // Store the random index for the next player
 
             Questions[i] = Questions[randomIndex];
+            QuestionList[i] = QuestionList[randomIndex];
+
             Questions[randomIndex] = tempQ;
+            QuestionList[randomIndex] = tempQuestion;
             Answers[i] = Answers[randomIndex];
             Answers[randomIndex] = tempA;
         }
@@ -155,7 +164,7 @@ public class GarageQuestionDivider : MonoBehaviour
         }
     }
 
-    // Pop up with the question. - dit gebeurt als je op de deurklink klikt
+    // Pop up with the question. - dit gebeurt als je op een van de objecten klikt
     public void PopUpQuestions(int val)
     {
         if (!AlreadyPopped)
@@ -174,10 +183,22 @@ public class GarageQuestionDivider : MonoBehaviour
 
             Debug.Log("this question: (next log)");
             Debug.Log(Questions[val]);
-            AnswerTexts[0].text = "A";
-            AnswerTexts[1].text = "B";
-            AnswerTexts[2].text = "C";
-            AnswerTexts[3].text = "D";
+            //AnswerTexts[0].text = "A";
+            //AnswerTexts[1].text = "B";
+            //AnswerTexts[2].text = "C";
+            //AnswerTexts[3].text = "D";
+            
+            //AnswerTexts[0].text = QuestionList[val].answers[0].answer;
+            //AnswerTexts[1].text = QuestionList[val].answers[1].answer;
+            //AnswerTexts[2].text = QuestionList[val].answers[2].answer;
+            //AnswerTexts[3].text = QuestionList[val].answers[3].answer;
+
+            // Load in the answers for the question.
+            // TODO randomize answers
+            for (int i = 0; i < 4; i++)
+            {
+                AnswerTexts[i].text = QuestionList[val].answers[i].answer;
+            }
 
             PopUpAnimation.SetTrigger("Pop");
 
