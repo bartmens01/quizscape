@@ -2,4 +2,4 @@
 
 the unity project files
 
-![alt text]https://github.com/TeunSpithoven/quizscape/main/Schermafbeelding 2022-11-08 om 15.00.52.png?raw=true)
+![alt text]https://github.com/TeunSpithoven/quizscape/blob/b4e72fe5340db28fe6ff505d7eda88edc7978f03/Schermafbeelding%202022-11-08%20om%2015.00.52.png?raw=true)
