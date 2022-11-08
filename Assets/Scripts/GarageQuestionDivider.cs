@@ -231,7 +231,7 @@ public class GarageQuestionDivider : MonoBehaviour
         FullQuestionPopped = false;
     }
 
-    // When the correct Answer is liked to a correct Question.
+    // When the correct Answer is linked to a correct Question.
     private void QuestionAndAnswerPop(int val)
     {
         // Close popup first.
