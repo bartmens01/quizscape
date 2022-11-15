@@ -70,6 +70,7 @@ public class GarageQuestionDivider : MonoBehaviour
     // Get the data from Json
     public JsonController GetJson;
 
+    // Questions that have been popped before
     public List<string> FoundQuestions = new List<string>();
     private List<Answer> AnswersToFind = new List<Answer>();
     private bool QuestionPopped = false;
@@ -181,18 +182,6 @@ public class GarageQuestionDivider : MonoBehaviour
             PopUpBox.SetActive(true);
             PopUpText.text = Questions.ElementAt(val);
 
-            Debug.Log("this question: (next log)");
-            Debug.Log(Questions[val]);
-            //AnswerTexts[0].text = "A";
-            //AnswerTexts[1].text = "B";
-            //AnswerTexts[2].text = "C";
-            //AnswerTexts[3].text = "D";
-            
-            //AnswerTexts[0].text = QuestionList[val].answers[0].answer;
-            //AnswerTexts[1].text = QuestionList[val].answers[1].answer;
-            //AnswerTexts[2].text = QuestionList[val].answers[2].answer;
-            //AnswerTexts[3].text = QuestionList[val].answers[3].answer;
-
             // Load in the answers for the question.
             // TODO randomize answers
             for (int i = 0; i < 4; i++)
@@ -200,15 +189,18 @@ public class GarageQuestionDivider : MonoBehaviour
                 AnswerTexts[i].text = QuestionList[val].answers[i].answer;
             }
 
+            FullQuestionPopped = true;
             PopUpAnimation.SetTrigger("Pop");
 
             Debug.Log("popped Quesiton: " + Questions.ElementAt(val));
             // Debug.Log("Questions: "+ Questions);
         }
-
-        // There is a pop up open.
-        AlreadyPopped = true;
-        FullQuestionPopped = false;
+        else
+        {
+            // There is a pop up open.
+            AlreadyPopped = true;
+            FullQuestionPopped = false;
+        }
     }
 
     // Pop up with the answers.
@@ -290,16 +282,20 @@ public class GarageQuestionDivider : MonoBehaviour
     // ans: 0:A 1:B 2:C 3:D
     public void CheckingAnswer(int ans)
     {
-        // Only check when a full answer is popped up.
+        // Only check when a full answer is popped up. - WERKT
         if (FullQuestionPopped)
         {
-            Answer curAnswer = Answers.ElementAt(Inventory.AnswerCardIndex);
+            string[] answer = Answers[ans].answer;
+            Answer curAnswer = Answers.ElementAt(ans);
 
             // If the answer is correct
             if (curAnswer.correctIndex == ans)
             {
-                // Remove the answer from the to be found list.
-                AnswersToFind.Remove(curAnswer);
+                // Remove the current questions answers from the to be found list. - WERKT
+                for (int i = 0; i < 4; i++) {
+                    Answer removeAnswer = Answers[i];
+                    AnswersToFind.Remove(removeAnswer);
+                }
 
                 // All questions have been answered.
                 if (AnswersToFind.Count == 0)
@@ -323,7 +319,7 @@ public class GarageQuestionDivider : MonoBehaviour
                 else
                 {
                     // Give the player a new Answer card and pop up.
-                    //QuestionClosed();
+                    // QuestionClosed();
 
                     int ran = Random.Range(0, AnswersToFind.Count - 1);
 

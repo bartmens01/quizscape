@@ -73,20 +73,20 @@ public class RoomSwitch : MonoBehaviour
     /// </summary>
     public void OpenQuestionTab()
     {
+        Debug.Log($"Questions window opened");
         if (!_OpenQuestion)
         {
+            // Run Pop Animation
             QuestionTab.SetActive(true);
             _OpenQuestion = true;
-
-            // Run Pop Animation
             QuestionTabAnimation.SetTrigger("Pop");
 
-            // When the tab is open, list all of the questions
+            // List all previously opened questions
             if (_Questions.FoundQuestions.Count != 0)
             {
                 for(int i = 0; i < _Questions.FoundQuestions.Count; i++)
                 {
-                    QuestionText.text = $"{_Questions.FoundQuestions[i]}\n\n{QuestionText.text}";
+                    QuestionText.text = $"Question {i + 1}: {_Questions.FoundQuestions[i]}\n\n{QuestionText.text}";
                 }
             }
         }
@@ -94,11 +94,7 @@ public class RoomSwitch : MonoBehaviour
         {
             // Run Close Animation
             QuestionTabAnimation.SetTrigger("Close");
-
-            //QuestionTab.SetActive(false);
             _OpenQuestion = false;
-
-            // Empty the text
             QuestionText.text = string.Empty;
         }
     }
