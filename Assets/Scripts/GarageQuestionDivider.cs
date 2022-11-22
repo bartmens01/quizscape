@@ -92,7 +92,7 @@ public class GarageQuestionDivider : MonoBehaviour
     void Update()
     {
         // Time Elapsed
-        if (AnswersToFind.Count != 0)
+        if (AnswersToFind.Count > 0)
         {
             // Start Timer
             Timestamp.Timer += Time.deltaTime;
@@ -297,11 +297,25 @@ public class GarageQuestionDivider : MonoBehaviour
             if (curAnswer.correctIndex == ans)
             {
                 // Remove the current questions answers from the to be found list. - WERKT
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 4; i++) {
                     Answer removeAnswer = Answers[i];
                     if (CurrentAnswers.Count > 0)
                     {
-                        AnswersToFind.Remove(CurrentAnswers[i]);
+                        //CurrentAnswers[i].answer[0];
+                        string GetAnswer(int index)
+                        {
+                            return CurrentAnswers[index].answer[0];
+                        }
+                        //Debug.Log($"removing answer {CurrentAnswers[i].answer}");
+                        Debug.Log($"AnswersToFInd: {AnswersToFind.Count}");
+                        //Debug.Log($"removing answer: { ToString(CurrentAnswers[i])}");
+                        //Debug.Log($"removing answer: {CurrentAnswers[i].ToString()}");
+                        Debug.Log($"answer[0]: {CurrentAnswers[i].answer[0]}");
+                        Answer delAns = new Answer(
+                            GetAnswer(0) + GetAnswer(1) + GetAnswer(2) + GetAnswer(3)
+                        );
+                        AnswersToFind.Remove(AnswersToFind.First( x => x.answer[0] == CurrentAnswers[i].answer[0]));
+                        Debug.Log(AnswersToFind.Count);
                     }
                     else
                     {
