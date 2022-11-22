@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class GarageQuestionDivider : MonoBehaviour
 {
@@ -60,6 +61,10 @@ public class GarageQuestionDivider : MonoBehaviour
     private bool FullQuestionPopped = false;
 
     public Inventory Inventory;
+
+    // Variables for the QuestionsRemaining text
+    public TMP_Text QuestionsRemaining;
+    public List<Answer> CurrentAnswers = new List<Answer>();
 
     // Variables for the questions and answers.
     private List<string> Questions = new List<string>();
@@ -121,12 +126,9 @@ public class GarageQuestionDivider : MonoBehaviour
     {
         // Fill Questions and answers
         int questionCount = GetJson._ReceivedData.data.room.questions.Count;
-        // Debug.Log("questionCount: "+questionCount);
         for (int i = 0; i < questionCount; i++ )
         {
             Questions.Add(GetJson._ReceivedData.data.room.questions[i].question);
-            //Debug.Log("the question json or string?: ");
-            //Debug.Log(GetJson._ReceivedData.data.room.questions[i].answers[0].answer + GetJson._ReceivedData.data.room.questions[i].answers[0].is_correct);
             QuestionList.Add(GetJson._ReceivedData.data.room.questions[i]);
 
             int answerCount = GetJson._ReceivedData.data.room.questions[i].answers.Count;
@@ -134,7 +136,6 @@ public class GarageQuestionDivider : MonoBehaviour
             {
                 Answers.Add(new Answer(GetJson._ReceivedData.data.room.questions[i].answers[ia].answer));
             }
-            // Answers.Add(new Answer($"{GetJson._ReceivedData.data.room.questions[i].answers[0].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[1].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[2].answer}, {GetJson._ReceivedData.data.room.questions[i].answers[3].answer}"));
         }
 
         // Randomize - WERKT
@@ -163,6 +164,8 @@ public class GarageQuestionDivider : MonoBehaviour
         {
             AnswersToFind.Add(a);
         }
+        Debug.Log($"questionsRemaining: {AnswersToFind.Count / 4}, AnswersToFind: {AnswersToFind.Count}");
+        QuestionsRemaining.text = (AnswersToFind.Count / 4).ToString();
     }
 
     // Pop up with the question. - dit gebeurt als je op een van de objecten klikt
@@ -187,6 +190,8 @@ public class GarageQuestionDivider : MonoBehaviour
             for (int i = 0; i < 4; i++)
             {
                 AnswerTexts[i].text = QuestionList[val].answers[i].answer;
+                Answer newCurrentAnswer = new Answer(QuestionList[val].answers[i].answer);
+                CurrentAnswers.Add(newCurrentAnswer);
             }
 
             FullQuestionPopped = true;
@@ -206,7 +211,6 @@ public class GarageQuestionDivider : MonoBehaviour
     // Pop up with the answers.
     public void PopUpAnswers(int val)
     {
-
         // Clicked while question pop is open. 
         if (QuestionPopped)
         {
@@ -227,12 +231,10 @@ public class GarageQuestionDivider : MonoBehaviour
 
             for (int i = 0; i < AnswerTexts.Length; i++)
             {
-                // ERROR / dit gaat fout
-                Debug.Log("i: "+i);
-                Debug.Log("Answertexts: "+AnswerTexts[i]);
-                Debug.Log("Answertexts answer: " + AnswerTexts[i].text);
                 AnswerTexts[i].text = Answers.ElementAt(val).answer[i];
+                CurrentAnswers.Add(Answers.ElementAt(i));
             }
+            Debug.Log($"currentanswers.count: {CurrentAnswers.Count}");
             PopUpText.text = "";
             PopUpAnimation.SetTrigger("Pop");
 
@@ -253,6 +255,7 @@ public class GarageQuestionDivider : MonoBehaviour
         QuestionPoppedClass.Question_Popped = false;
         AlreadyPopped = false;
         FullQuestionPopped = false;
+        CurrentAnswers.Clear();
     }
 
     // When the correct Answer is linked to a correct Question.
@@ -268,10 +271,13 @@ public class GarageQuestionDivider : MonoBehaviour
         string toPop = Questions.ElementAt(val);
 
         //Creating the answer text for the popup.
+        Debug.Log($"Current answers before: {CurrentAnswers.Count}");
         for (int i = 0; i < AnswerTexts.Length; i++)
         {
             AnswerTexts[i].text = Answers.ElementAt(val).answer[i];
+            CurrentAnswers.Add(Answers.ElementAt(i));
         }
+        Debug.Log($"Current answers for ths popup: {CurrentAnswers.Count}");
 
         // Popping.
         PopUpText.text = toPop;
@@ -279,7 +285,6 @@ public class GarageQuestionDivider : MonoBehaviour
     }
 
     // Checking if the answer is correct.
-    // ans: 0:A 1:B 2:C 3:D
     public void CheckingAnswer(int ans)
     {
         // Only check when a full answer is popped up. - WERKT
@@ -292,10 +297,20 @@ public class GarageQuestionDivider : MonoBehaviour
             if (curAnswer.correctIndex == ans)
             {
                 // Remove the current questions answers from the to be found list. - WERKT
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < 3; i++) {
                     Answer removeAnswer = Answers[i];
-                    AnswersToFind.Remove(removeAnswer);
+                    if (CurrentAnswers.Count > 0)
+                    {
+                        AnswersToFind.Remove(CurrentAnswers[i]);
+                    }
+                    else
+                    {
+                        throw new System.Exception("no current answers left to delete");
+                    }
                 }
+                CurrentAnswers.Clear();
+                Debug.Log($"questionsRemaining: {AnswersToFind.Count / 4}, AnswersToFind: {AnswersToFind.Count}");
+                QuestionsRemaining.text = (AnswersToFind.Count / 4).ToString();
 
                 // All questions have been answered.
                 if (AnswersToFind.Count == 0)
@@ -336,11 +351,11 @@ public class GarageQuestionDivider : MonoBehaviour
                         indx++;
                     }
 
-                    PopUpText.text = "Correct! \n New Answer card:";
-                    AnswerTexts[0].text = Answers.ElementAt(Inventory.AnswerCardIndex).answer[0];
-                    AnswerTexts[1].text = Answers.ElementAt(Inventory.AnswerCardIndex).answer[1];
-                    AnswerTexts[2].text = Answers.ElementAt(Inventory.AnswerCardIndex).answer[2];
-                    AnswerTexts[3].text = Answers.ElementAt(Inventory.AnswerCardIndex).answer[3];
+                    PopUpText.text = "Correct!";
+                    AnswerTexts[0].text = "This";
+                    AnswerTexts[1].text = "question";
+                    AnswerTexts[2].text = "has been";
+                    AnswerTexts[3].text = "answered correctly";
                 }
             }
 
