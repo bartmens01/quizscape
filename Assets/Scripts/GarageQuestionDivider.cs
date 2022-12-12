@@ -125,6 +125,8 @@ public class GarageQuestionDivider : MonoBehaviour
     public void FillAndRandomize()
     {
         // Fill Questions and answers
+        Debug.Log("GetJson._RecievedData");
+        Debug.Log(GetJson._ReceivedData);
         int questionCount = GetJson._ReceivedData.data.room.questions.Count;
         for (int i = 0; i < questionCount; i++ )
         {
@@ -330,7 +332,7 @@ public class GarageQuestionDivider : MonoBehaviour
                 if (AnswersToFind.Count == 0)
                 {
                     // CLear all fields and end.
-                    PopUpText.text = $"You've escaped! \n Wrong answers: {TimesAnsweredWrong}";
+                    PopUpText.text = $"Je bent ontsnapt! \n Fouten: {TimesAnsweredWrong}";
                     AnswerTexts[0].text = "";
                     AnswerTexts[1].text = "";
                     AnswerTexts[2].text = "";
@@ -340,8 +342,8 @@ public class GarageQuestionDivider : MonoBehaviour
                     Debug.Log($"Time elapsed: {Timestamp.Timer}");
 
                     // Serialize and send json data
-                    GetJson.SerializeJson();
-                    GetJson.SendJson();
+                   GetJson.SerializeJson();
+                   GetJson.SendJson();
                 }
 
                 // There are more questions left.

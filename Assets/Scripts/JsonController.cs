@@ -114,6 +114,7 @@ public class JsonController : MonoBehaviour
     // Send data to CMS
     public void SendJson()
     {
+        Debug.Log("send json");
         StartCoroutine(SendData());
     }
 }
