@@ -1,7 +1,8 @@
-using System.Collections;
+ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
+ using System.Reflection;
+ using TMPro;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
@@ -68,7 +69,7 @@ public class GarageQuestionDivider : MonoBehaviour
 
     // Variables for the questions and answers.
     private List<string> Questions = new List<string>();
-    private List<Question> QuestionList = new List<Question>();
+    public List<Question> QuestionList = new List<Question>();
     private List<Answer> Answers = new List<Answer>();
     //private List<string> CorrectAnswers = new List<string>();
 
@@ -108,7 +109,7 @@ public class GarageQuestionDivider : MonoBehaviour
         if (Input.GetKey("escape"))
         {
             // Close application when the escape button is pressed.
-            Application.Quit();
+           // Application.Quit();
 
             // When closing with escape it might disable clicking on buttons entirely.
             //if (PopUpBox.activeSelf)
@@ -173,6 +174,7 @@ public class GarageQuestionDivider : MonoBehaviour
     // Pop up with the question. - dit gebeurt als je op een van de objecten klikt
     public void PopUpQuestions(int val)
     {
+        ScriptManager.main.ActivatePlayer(false);
         if (!AlreadyPopped)
         {
             QuestionPopped = true;
@@ -197,8 +199,9 @@ public class GarageQuestionDivider : MonoBehaviour
             }
 
             FullQuestionPopped = true;
-            PopUpAnimation.SetTrigger("Pop");
-
+            //PopUpAnimation.SetTrigger("Pop");
+            
+            PopUpBox.LeanScale(new Vector3(800, 500, 0), 0.2f);
             Debug.Log("popped Quesiton: " + Questions.ElementAt(val));
             // Debug.Log("Questions: "+ Questions);
         }
@@ -216,9 +219,11 @@ public class GarageQuestionDivider : MonoBehaviour
         // Clicked while question pop is open. 
         if (QuestionPopped)
         {
+       
             // Check if the answers fit the question.
             if (QuestionPoppedIndex == Inventory.AnswerCardIndex)
             {
+                ScriptManager.main.ActivatePlayer(true);
                 // Pop the full question with the answer.
                 QuestionAndAnswerPop(val);
                 FullQuestionPopped = true;
@@ -238,8 +243,9 @@ public class GarageQuestionDivider : MonoBehaviour
             }
             Debug.Log($"currentanswers.count: {CurrentAnswers.Count}");
             PopUpText.text = "";
-            PopUpAnimation.SetTrigger("Pop");
-
+           // PopUpAnimation.SetTrigger("Pop");
+            
+            PopUpBox.LeanScale(new Vector3(800, 500, 0), 0.2f);
             // Add answer to the sidelist.
             if (AnswersToFind.Contains(Answers.ElementAt(val)))
             {
@@ -253,11 +259,14 @@ public class GarageQuestionDivider : MonoBehaviour
     }
     public void QuestionClosed()
     {
+        ScriptManager.main.ActivatePlayer(true);
+        PopUpBox.LeanScale(new Vector3(0, 0, 0), 0.1f);
         QuestionPopped = false;
         QuestionPoppedClass.Question_Popped = false;
         AlreadyPopped = false;
         FullQuestionPopped = false;
         CurrentAnswers.Clear();
+        print("Closed");
     }
 
     // When the correct Answer is linked to a correct Question.
@@ -283,7 +292,8 @@ public class GarageQuestionDivider : MonoBehaviour
 
         // Popping.
         PopUpText.text = toPop;
-        PopUpAnimation.SetTrigger("Pop");
+       // PopUpAnimation.SetTrigger("Pop");
+       PopUpBox.LeanScale(new Vector3(800, 500, 0), 0.2f);
     }
 
     // Checking if the answer is correct.
@@ -299,6 +309,13 @@ public class GarageQuestionDivider : MonoBehaviour
             if (curAnswer.correctIndex == ans)
             {
                 // Remove the current questions answers from the to be found list. - WERKT
+                    ScriptManager.main.AddInt();
+                    InvetoryManager.main.SetHoldItem();
+                    if (InvetoryManager.main.holdebleItem != null)
+                    {
+                    InvetoryManager.main.AddTolist(InvetoryManager.main.holdebleItem);
+                        
+                    }
                 for (int i = 0; i < 4; i++) {
                     Answer removeAnswer = Answers[i];
                     if (CurrentAnswers.Count > 0)
@@ -318,6 +335,7 @@ public class GarageQuestionDivider : MonoBehaviour
                         );
                         AnswersToFind.Remove(AnswersToFind.First( x => x.answer[0] == CurrentAnswers[i].answer[0]));
                         Debug.Log(AnswersToFind.Count);
+                       
                     }
                     else
                     {
@@ -368,10 +386,10 @@ public class GarageQuestionDivider : MonoBehaviour
                     }
 
                     PopUpText.text = "Correct!";
-                    AnswerTexts[0].text = "This";
-                    AnswerTexts[1].text = "question";
-                    AnswerTexts[2].text = "has been";
-                    AnswerTexts[3].text = "answered correctly";
+                   // AnswerTexts[0].enabled = false;
+                   // AnswerTexts[1].enabled = false;
+                   // AnswerTexts[2].enabled = false;
+                   // AnswerTexts[3].enabled = false;
                 }
             }
 

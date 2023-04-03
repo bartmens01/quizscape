@@ -9,6 +9,18 @@ TagManager:
   - GarageManager
   - inventory
   - Question
+  - Bullet
+  - Interact
+  - Ground
+  - BodyPart
+  - TopFrontPart
+  - TriggerPart
+  - DrillPart
+  - Tools
+  - outOfBounds
+  - Bounds
+  - Clue
+  - CodeLock
   layers:
   - Default
   - TransparentFX

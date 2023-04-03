@@ -23,4 +23,11 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     {
         SceneManager.LoadScene("Lobby");
     }
+
+    public IEnumerator a()
+    {
+        yield return new WaitForSeconds(1f);
+  
+    }
+
 }

@@ -13,7 +13,7 @@ EditorBuildSettings:
     guid: a8f2fecb4e341494285a9a738f29558c
   - enabled: 1
     path: Assets/Scenes/Garage.unity
-    guid: 703606f0204d7ac40877e69871a02eca
+    guid: b47445e57ed59e846878abc61b08f166
   - enabled: 1
     path: Assets/Scenes/Laboratory.unity
     guid: b7a4ded700c078f4e8cda291de304cf0
