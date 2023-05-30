@@ -13,7 +13,6 @@ public class UseInteractible : MonoBehaviour
     private Transform HoldPoistion;
     [SerializeField] private Transform ObjectHoldPos;
     [SerializeField] private Transform ClueHoldPos;
-    private GameObject holdItem;
     // Start is called before the first frame update
     void Start()
     {
@@ -83,7 +82,8 @@ public class UseInteractible : MonoBehaviour
                 {
                     HoldPoistion = ObjectHoldPos;
                     InvetoryManager.main.holdItem(hit.collider.gameObject);
-                  ScriptManager.main.popUpQuestion();
+                  ScriptManager.main.popUpQuestion(); 
+               
                    
                 }
 
@@ -92,6 +92,7 @@ public class UseInteractible : MonoBehaviour
                     HoldPoistion = ObjectHoldPos;
                     InvetoryManager.main.holdItem(hit.collider.gameObject);
                     hit.collider.GetComponent<DrillParts>().addToInventory();
+                    InvetoryManager.main.AddTolist(hit.collider.gameObject);
                     ScriptManager.main.popUpQuestion();
                 }
                 

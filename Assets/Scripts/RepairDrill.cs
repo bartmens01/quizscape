@@ -6,14 +6,14 @@ using UnityEngine;
 
 public class RepairDrill : MonoBehaviour
 {
+    public bool canDestroy; 
     private bool isInRage;
-    private bool repaired; 
     [SerializeField]
-    private GameObject part1;
+    GameObject[] Objects;
     [SerializeField]
-    private GameObject part2;
-    [SerializeField]
-    private GameObject part3;
+    string[] neededObjects;
+    int ObjectsActive;
+    [SerializeField] string ObjectName;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,44 +25,54 @@ public class RepairDrill : MonoBehaviour
     {
         if (isInRage && Input.GetKeyDown(KeyCode.E))
         {
-           
-            if (InvetoryManager.main.Objects.Contains("DrillPart1"))
-            {
-                if (!part1.activeSelf)
-                {
-                InvetoryManager.main.removeHoldingItem();
-                    
-                }
-                part1.SetActive(true);
-            }
-            if (InvetoryManager.main.Objects.Contains("DrillPart2"))
-            {
-                if (!part2.activeSelf)
-                {
-                InvetoryManager.main.removeHoldingItem();
-                }
-                part2.SetActive(true);
 
-            }
-            if (InvetoryManager.main.Objects.Contains("DrillPart3"))
-            {
-                if (!part3.activeSelf)
-                {
-                    InvetoryManager.main.removeHoldingItem();
-                }
-                part3.SetActive(true);
-               
-            }
-
-            if (InvetoryManager.main.Objects.Contains("DrillPart1") && InvetoryManager.main.Objects.Contains("DrillPart2") && InvetoryManager.main.Objects.Contains("DrillPart3") )
-            {
-
-                InvetoryManager.main.DrillCollected = true;
-                gameObject.layer = LayerMask.NameToLayer("Default");
-            }
+         
+            ActivateObject();
+            
         }
     }
+    void ActivateObject()
+    {
+        for (int i = 0; i < Objects.Length; i++)
+        {
+            print(neededObjects[i]);
+            if (InvetoryManager.main.Objects.Contains(neededObjects[i]))
+            {
+                if (!Objects[i].activeSelf)
+                { 
+                    Objects[i].SetActive(true);
+                    InvetoryManager.main.removeHoldingItem();
+                }
+            
+            }
+        }
+        CheckIfObjectsActive();
+    }
+   void CheckIfObjectsActive()
+    {
+        
+        for (int i = 0; i < Objects.Length; i++)
+        {
+            if (Objects[i].activeSelf)
+            {
 
+                ObjectsActive++;
+            }
+        }
+        if (ObjectsActive == Objects.Length)
+        {
+         
+            InvetoryManager.main.AddTolistString(ObjectName);
+          
+            gameObject.layer = LayerMask.NameToLayer("Default");
+            if (canDestroy)
+            {
+                Destroy(gameObject);
+            }
+
+        }
+        ObjectsActive = 0;
+    }
     private void OnTriggerEnter(Collider other)
     {
         isInRage = true;

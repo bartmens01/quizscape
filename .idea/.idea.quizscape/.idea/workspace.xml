@@ -12,6 +12,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/KeyPad.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/AwnserRandom.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/CodeLock.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/InvetoryManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Object/DrillParts.cs" root0="FORCE_HIGHLIGHTING" />
@@ -105,6 +106,11 @@
       <workItem from="1679990292776" duration="5472000" />
       <workItem from="1680004342656" duration="6847000" />
       <workItem from="1680076541390" duration="3138000" />
+      <workItem from="1680562122032" duration="1000" />
+      <workItem from="1680562157258" duration="8368000" />
+      <workItem from="1680626471860" duration="454000" />
+      <workItem from="1681199513978" duration="4500000" />
+      <workItem from="1683532398169" duration="74000" />
     </task>
     <servers />
   </component>

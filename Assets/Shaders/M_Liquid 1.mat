@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Liquid 1
+  m_Shader: {fileID: -6465566751694194690, guid: 3e72d98ea39d7d342a46382a9fe3130f, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _BUILTIN_QueueControl: 1
+    - _BUILTIN_QueueOffset: 0
+    - _Fill: -0.05
+    - _FrenselEffectAmount: 2.03
+    - _WobbelX: 0
+    - _WobbelZ: 0
+    - _Wobbelz: 1.7
+    - _wobbelX: 0
+    - _wobbelZ: 0
+    m_Colors:
+    - _FrenselColor: {r: 1, g: 0.3920325, b: 0, a: 0}
+    - _LiqColor: {r: 0.8980392, g: 0.29379866, b: 0.098039225, a: 0}
+    - _SurColor: {r: 0.9433962, g: 0.36845848, b: 0.36845848, a: 0}
+  m_BuildTextureStacks: []
+--- !u!114 &8531667540727308634
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 0
